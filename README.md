@@ -7,8 +7,8 @@
 |model|实体|||
 |dao|数据交互|||
 |system|后台服务|43000|0|
- **备注** 
-- 使用分布式id生成需配置workerId和datacenterId，需保证每个服务workerId和datacenterId组合均不一致，docker容器初始化时workerId为默认设置，datacenterId则根据端口号生成，如40001的datacenterId即为1，以此规则命名
+
+* 使用分布式id生成需配置workerId和datacenterId，需保证每个服务workerId和datacenterId组合均不一致，docker容器初始化时workerId为默认设置，datacenterId则根据端口号生成，如40001的datacenterId即为1，以此规则命名
 
 ### Docker环境搭建
 |应用|获取|运行|
@@ -16,8 +16,8 @@
 |redis|docker pull redis|docker run --restart=always -d --name redis -p 6379:6379 -v /etc/localtime:/etc/localtime redis redis-server --appendonly yes --requirepass "admin"|
 |rabbitmq|docker pull rabbitmq:management|docker run --restart=always --name rabbitmq -d -p 15672:15672 -p 5672:5672 rabbitmq:management|
 |minio|docker pull minio/minio|docker run --restart=always --name minio -d -p 9000:9000 -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=12345678" -v /mnt/data:/data -v /mnt/config:/root/.minio minio/minio server /data|
- **备注** 
-- 生产环境IDEA链接Docker开放端口2375请配置好ca证书
+
+* 生产环境IDEA链接Docker开放端口2375请配置好ca证书
 
 ### 预设初始账号密码
 * redis 
