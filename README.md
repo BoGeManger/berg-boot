@@ -42,3 +42,4 @@
  * 鉴权框架：Shiro+JWT
  * Mybatis插件：Mybatis Plus,PageHelper
  * 接口文档框架：Swagger
+ * 数据库连接池：Druid 
