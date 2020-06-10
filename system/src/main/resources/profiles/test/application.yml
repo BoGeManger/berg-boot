@@ -1,0 +1,98 @@
+server:
+  port: 43000
+  servlet:
+    context-path: /system
+  tomcat:
+    max-http-post-size: -1
+
+spring:
+  profiles:
+    active: test
+  application:
+    name: system
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  quartz:
+    job-store-type: jdbc
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/basedb?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8
+    username: root
+    password: 123456
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  redis:
+    database: 0
+    host: 172.16.10.19
+    password:
+    pool:
+      maxActive: 200
+      maxIdle: 8
+      maxWait: -1
+      minIdle: 0
+    port: 6379
+    timeout: 0
+  rabbitmq:
+    host: 172.16.10.19
+    port: 5672
+    username: admin
+    password: admin
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  global-config:
+    banner: false
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 返回类型为Map,显示null对应的字段
+    call-setters-on-nulls: true
+
+minio:
+  minio_url: 172.16.10.19:9000
+  minio_name: admin
+  minio_pass: 12345678
+  bucketName: master
+
+shiro:
+  urls: /**/doc.html/**,/**/swagger-resources/**,/**/v2/**,/**/webjars/**,/system/login/login
+  accounts: admin
+  expireTime: 7200
+
+files:
+  temp:
+    path: /files/
+
+snowflake:
+  id:
+    worker:
+      workerId: 0
+      datacenterId: 0
+
+swagger:
+  enabled: false
