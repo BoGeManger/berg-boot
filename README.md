@@ -41,5 +41,5 @@
  * Excel文件处理：AutoPOI
  * 鉴权框架：Shiro+JWT
  * Mybatis插件：Mybatis Plus,PageHelper
- * 接口文档框架：Swagger
- * 数据库连接池：Druid 
+ * 接口文档框架：Swagger 2
+ * JDBC组件：Druid 
