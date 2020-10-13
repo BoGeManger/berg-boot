@@ -78,11 +78,11 @@ public class SnowflakeIdWorker {
 	private final long sequenceMask = -1L ^ (-1L << sequenceBits);
 
 	/** 工作机器ID(0~31) */
-	@Value("${snowflake.id.worker.workerId}")
+	@Value("${snowflake.id.worker.workerId:0}")
 	private long workerId;
 
 	/** 数据中心ID(0~31) */
-	@Value("${snowflake.id.worker.datacenterId}")
+	@Value("${snowflake.id.worker.datacenterId:0}")
 	private long datacenterId;
 
 	/** 毫秒内序列(0~4095) */

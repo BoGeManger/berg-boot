@@ -14,10 +14,11 @@ import java.io.InputStream;
 @Component
 public class MinioUtil {
 
-    private static String minioUrl;
-    private static String minioName;
-    private static String minioPass;
-    private static String bucketName;
+    static String minioUrl;
+    static String serviceUrl;
+    static String minioName;
+    static String minioPass;
+    static String bucketName;
 
     public static String getMinioUrl() {
         return minioUrl;
@@ -25,6 +26,14 @@ public class MinioUtil {
 
     public static void setMinioUrl(String minioUrl) {
         MinioUtil.minioUrl = minioUrl;
+    }
+
+    public static String getServiceUrl() {
+        return serviceUrl;
+    }
+
+    public static void setServiceUrl(String serviceUrl) {
+        MinioUtil.serviceUrl = serviceUrl;
     }
 
     public static String getMinioName() {
@@ -58,6 +67,7 @@ public class MinioUtil {
     public static void setMinioClient(MinioClient minioClient) {
         MinioUtil.minioClient = minioClient;
     }
+
 
     private static MinioClient minioClient = null;
 
@@ -309,7 +319,7 @@ public class MinioUtil {
      * @throws Exception
      */
     public static String getUrlByName(String objectName) throws Exception{
-        return  minioClient.getObjectUrl(bucketName,objectName);
+        return getServiceUrl() + minioClient.getObjectUrl(bucketName,objectName).replaceAll(getMinioUrl(),"");
     }
 
     /**
@@ -320,7 +330,7 @@ public class MinioUtil {
      * @throws Exception
      */
     public static String getUrl(String bucketName, String objectName) throws Exception{
-        return  minioClient.getObjectUrl(bucketName,objectName);
+        return  getServiceUrl() + minioClient.getObjectUrl(bucketName,objectName).replaceAll(getMinioUrl(),"");
     }
 
     /**

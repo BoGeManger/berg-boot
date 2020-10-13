@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.berg.system.constant.SystemConstans;
+import com.berg.utils.DesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -67,6 +68,20 @@ public class JWTUtil {
             Subject subject = SecurityUtils.getSubject();
             DecodedJWT jwt = JWT.decode(subject.getPrincipal().toString());
             return jwt.getClaim("username").asString();
+        } catch (JWTDecodeException e) {
+            log.error("error：{}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 获取token
+     * @return
+     */
+    public String getToken(){
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            return DesUtil.encrypt(subject.getPrincipal().toString());
         } catch (JWTDecodeException e) {
             log.error("error：{}", e.getMessage());
             return null;

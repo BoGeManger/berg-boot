@@ -1,5 +1,7 @@
 package com.berg.file;
 
+import com.berg.constant.AppConstants;
+import com.berg.utils.SpringUtil;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
@@ -22,9 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ExcelUtil {
-
-    @Value("${files.temp.path:/files/}")
-    static String filesTempPath;
 
     /**
      * 标题样式
@@ -64,7 +63,7 @@ public class ExcelUtil {
             byte[] bytes = file.getBytes();
             String fileName = file.getOriginalFilename();
             String name = fileName.substring(fileName.lastIndexOf("."));
-            path = Paths.get(filesTempPath + sdf.format(new Date()) + name);
+            path = Paths.get(sdf.format(new Date()) + name);
             Files.write(path, bytes);
             File f = new File(path.toString());
             is = new FileInputStream(f);
@@ -138,7 +137,7 @@ public class ExcelUtil {
             byte[] bytes = file.getBytes();
             String fileName = file.getOriginalFilename();
             String name = fileName.substring(fileName.lastIndexOf("."));
-            path = Paths.get(filesTempPath + sdf.format(new Date()) + name);
+            path = Paths.get(sdf.format(new Date()) + name);
             Files.write(path, bytes);
             File f = new File(path.toString());
             is = new FileInputStream(f);
@@ -203,7 +202,7 @@ public class ExcelUtil {
             String fileName =  sdf.format(new Date())+"."+fileExtension;
             String name = fileName.substring(fileName.lastIndexOf("."));
             //Path path = Paths.get("src/main/resources/templates/" + sdf.format(new Date()) + name);
-            path = Paths.get(filesTempPath + sdf.format(new Date()) + name);
+            path = Paths.get(sdf.format(new Date()) + name);
             Files.write(path, bytes);
             File f = new File(path.toString());
             is = new FileInputStream(f);
@@ -293,19 +292,6 @@ public class ExcelUtil {
             }
         }
         return columnValue;
-    }
-
-    /**
-     * 在硬盘上写入excel文件
-     *
-     * @param version
-     * @param excelSheets
-     * @throws IOException
-     */
-    public static void createWorkbookAtDisk(ExcelVersion version, List<ExcelSheetPO> excelSheets)
-            throws IOException {
-        FileOutputStream fileOut = new FileOutputStream(filesTempPath);
-        createWorkbookAtOutStream(version, excelSheets, fileOut, true);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.berg.config;
 
-
 import com.berg.file.MinioUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,26 +10,28 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MinioConfig {
 
-    @Value(value = "${minio.minio_url}")
-    private String minioUrl;
-    @Value(value = "${minio.minio_name}")
-    private String minioName;
-    @Value(value = "${minio.minio_pass}")
-    private String minioPass;
+    @Value(value = "${minio.url}")
+    String url;
+    @Value(value = "${minio.serviceUrl}")
+    String serviceUrl;
+    @Value(value = "${minio.name}")
+    String name;
+    @Value(value = "${minio.password}")
+    String password;
     @Value(value = "${minio.bucketName}")
-    private String bucketName;
+    String bucketName;
 
     @Bean
     public void initMinio(){
-        if(!minioUrl.startsWith("http")){
-            minioUrl = "http://" + minioUrl;
+        if(!url.startsWith("http")){
+            url = "http://" + url;
         }
-        if(!minioUrl.endsWith("/")){
-            minioUrl = minioUrl.concat("/");
+        if(!url.endsWith("/")){
+            url = url.concat("/");
         }
-        MinioUtil.setMinioUrl(minioUrl);
-        MinioUtil.setMinioName(minioName);
-        MinioUtil.setMinioPass(minioPass);
+        MinioUtil.setMinioUrl(url);
+        MinioUtil.setMinioName(name);
+        MinioUtil.setMinioPass(password);
         MinioUtil.setBucketName(bucketName);
 
         //创建bucket

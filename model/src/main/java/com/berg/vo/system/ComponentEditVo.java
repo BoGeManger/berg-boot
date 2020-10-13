@@ -5,11 +5,13 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 public class ComponentEditVo {
 
+    @NotNull(message = "组件id不能为空")
     @Min(value = 0,message = "组件id不能小于0")
     @ApiModelProperty(value = "组件id")
     Integer id;
@@ -29,12 +31,14 @@ public class ComponentEditVo {
     @Size(max = 50, message = "图标长度不能超过50个字符")
     @ApiModelProperty(value = "图标")
     String icon;
-    @Size(max = 500, message = "组件描述不能超过500个字符")
+    @Size(max = 255, message = "组件描述不能超过255个字符")
     @ApiModelProperty(value = "组件描述")
     String remark;
+    @NotNull(message = "组件类型不能为空")
     @Min(value = 0,message = "组件类型不能小于0")
     @ApiModelProperty(value = "组件类型(0=菜单,1=按钮)")
     Integer type;
+    @NotNull(message = "排序不能为空")
     @Min(value = 0,message = "排序不能小于0")
     @ApiModelProperty(value = "排序")
     Integer no;

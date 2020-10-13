@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.berg.constant.RedisKeyConstants;
-import com.berg.dao.sys.entity.ComponentTbl;
-import com.berg.dao.sys.entity.UserTbl;
-import com.berg.dao.sys.service.ComponentTblService;
-import com.berg.dao.sys.service.RoleTblService;
-import com.berg.dao.sys.service.UserTblService;
+import com.berg.dao.system.sys.entity.ComponentTbl;
+import com.berg.dao.system.sys.entity.UserTbl;
+import com.berg.dao.system.sys.service.ComponentTblDao;
+import com.berg.dao.system.sys.service.RoleTblDao;
+import com.berg.dao.system.sys.service.UserTblDao;
 import com.berg.exception.UserFriendException;
 import com.berg.system.service.system.LoginService;
 import com.berg.system.authentication.JWTToken;
@@ -41,11 +41,11 @@ public class LoginServiceImpl implements LoginService {
     StringRedisTemplate stringTemplate;
 
     @Autowired
-    RoleTblService roleTblService;
+    RoleTblDao roleTblDao;
     @Autowired
-    UserTblService userTblService;
+    UserTblDao userTblDao;
     @Autowired
-    ComponentTblService componentTblService;
+    ComponentTblDao componentTblDao;
 
     /**
      * 用户登录
@@ -83,7 +83,7 @@ public class LoginServiceImpl implements LoginService {
                 .eq(UserTbl::getUsername,StringUtils.lowerCase(input.getUsername()))
                 .eq(UserTbl::getPassword,DigestUtils.md5DigestAsHex(input.getPassword().getBytes()))
                 .eq(UserTbl::getIsdel,0);
-        UserTbl userTbl =userTblService.getOne(query);
+        UserTbl userTbl =userTblDao.getOne(query);
         if (userTbl == null) {
             throw new UserFriendException("用户名或密码错误");
         } else if (userTbl.getIslock().equals(1)) {
@@ -117,7 +117,7 @@ public class LoginServiceImpl implements LoginService {
         if (StringUtils.isNotBlank(value)) {
             list = JSON.parseArray(stringTemplate.opsForValue().get(key), String.class);
         } else {
-            list = roleTblService.getMapper().listUserRoleName(userName);
+            list = roleTblDao.getMapper().listUserRoleName(userName);
             stringTemplate.opsForValue().set(key,JSON.toJSONString(list),systemConstans.getExpireTime(), TimeUnit.SECONDS);
         }
         return list.stream().collect(Collectors.toSet());
@@ -137,11 +137,11 @@ public class LoginServiceImpl implements LoginService {
             list = JSON.parseArray(value, String.class);
         } else {
             if(checkAccount(userName)){
-                LambdaQueryWrapper query = new QueryWrapper<ComponentTbl>().select("distinct perms").lambda()
+                LambdaQueryWrapper query = new QueryWrapper<ComponentTbl>().select("perms").lambda()
                         .eq(ComponentTbl::getIsdel,0);
-                list = componentTblService.list(query);
+                list = componentTblDao.listObjs(query);
             }else {
-                list = componentTblService.getMapper().listUserPerms(userName);
+                list = componentTblDao.getMapper().listUserPerms(userName);
             }
             stringTemplate.opsForValue().set(key,JSON.toJSONString(list),systemConstans.getExpireTime(), TimeUnit.SECONDS);
         }
@@ -161,6 +161,18 @@ public class LoginServiceImpl implements LoginService {
                 flag = true;
         }
         return  flag;
+    }
+
+    /**
+     * 退出登录
+     */
+    @Override
+    public void logout(){
+        String token =  jWTUtil.getToken();
+        if(StringUtils.isNotBlank(token)){
+            String key = String.format(RedisKeyConstants.System.SYSTEM_TOKEN, token);
+            stringTemplate.delete(key);
+        }
     }
 
 }

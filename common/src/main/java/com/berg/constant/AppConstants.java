@@ -2,6 +2,7 @@ package com.berg.constant;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public  class AppConstants {
     @Value("${spring.application.name}")
     String appName;
     @Value("${server.port}")
-    String port;
+    Integer port;
 
     @Value("${snowflake.id.worker.workerId:0}")
     String workerId;

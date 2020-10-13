@@ -13,4 +13,5 @@ public interface LoginService {
 
     Set<String> getUserPerms(String userName);
 
+    void logout();
 }

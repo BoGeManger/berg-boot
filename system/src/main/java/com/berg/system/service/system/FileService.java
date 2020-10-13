@@ -12,7 +12,5 @@ public interface FileService {
 
     FilePathVo uploadFile(MultipartFile file, String name, String code,Integer type);
 
-    void recordDownload(String path);
-
     void delFileByName(String name);
 }

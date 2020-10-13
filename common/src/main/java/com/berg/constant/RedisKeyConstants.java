@@ -12,4 +12,9 @@ public class RedisKeyConstants {
 		public static final String USER_PERMS = "user_perms_%s";
 	}
 
+	public static final class Request{
+		//请求应用接口(name)
+		public static final String APPLICATION_API = "application_api_%s";
+	}
+
 }

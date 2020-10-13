@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class UserVo {
@@ -20,22 +19,22 @@ public class UserVo {
     Integer organizationId;
     @ApiModelProperty(value = "所属组织名称")
     String organizationName;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "锁定时间")
     LocalDateTime lockTime;
     @ApiModelProperty(value = "锁定人")
     String lockUser;
-    @ApiModelProperty(value = "是否锁定")
-    Boolean islock;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @ApiModelProperty(value = "是否锁定(0 否,1 是)")
+    Integer islock;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最后登录时间")
     LocalDateTime lastLoginTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     LocalDateTime createTime;
     @ApiModelProperty(value = "创建人")
     String createUser;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新时间")
     LocalDateTime modifyTime;
     @ApiModelProperty(value = "更新人")

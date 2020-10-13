@@ -1,11 +1,14 @@
 package com.berg.file;
 
+import com.berg.constant.AppConstants;
+import com.berg.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
@@ -19,9 +22,6 @@ import java.util.List;
 
 @Slf4j
 public class CSVUtil {
-
-    @Value("${files.temp.path:/files/}")
-    static String filesTempPath;
     
     //行尾分隔符定义
     final static String NEW_LINE_SEPARATOR = "\n";
@@ -36,7 +36,7 @@ public class CSVUtil {
     public static byte[] makeTempCSV(String[] head, List<Object[]> values) throws IOException {
         // 创建文件
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String  path = filesTempPath + sdf.format(new Date()) + ".csv";
+        String  path = sdf.format(new Date()) + ".csv";
         File file = new File(path);
         CSVFormat formator = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
         OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
@@ -72,7 +72,7 @@ public class CSVUtil {
         File f = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            Path path =  Paths.get(filesTempPath + sdf.format(new Date())+".csv");
+            Path path =  Paths.get( sdf.format(new Date())+".csv");
             Files.write(path, bytes);
             f = new File(path.toString());
             fileInputStream = new FileInputStream(f);
@@ -139,7 +139,7 @@ public class CSVUtil {
         File f = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            Path path =  Paths.get(filesTempPath + sdf.format(new Date())+".csv");
+            Path path =  Paths.get( sdf.format(new Date())+".csv");
             Files.write(path, bytes);
             f = new File(path.toString());
             fileInputStream = new FileInputStream(f);

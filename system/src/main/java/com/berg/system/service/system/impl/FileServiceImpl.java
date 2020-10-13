@@ -1,11 +1,10 @@
 package com.berg.system.service.system.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.berg.dao.page.PageInfo;
-import com.berg.dao.sys.entity.FileTbl;
-import com.berg.dao.sys.service.FileTblService;
+import com.berg.dao.system.sys.entity.FileTbl;
+import com.berg.dao.system.sys.service.FileTblDao;
 import com.berg.exception.FailException;
 import com.berg.file.MinioUtil;
 import com.berg.system.authentication.JWTUtil;
@@ -31,7 +30,7 @@ public class FileServiceImpl  implements FileService {
     FileAsyncTask fileAsyncTask;
 
     @Autowired
-    FileTblService fileTblService;
+    FileTblDao fileTblDao;
 
     /**
      * 获取文件列表
@@ -39,22 +38,22 @@ public class FileServiceImpl  implements FileService {
      */
     @Override
     public PageInfo<FileVo> getFilePage(GetFilePageInVo input){
-        PageHelper.startPage(input.getPageIndex(), input.getPageSize());
-        QueryWrapper query = new QueryWrapper<FileTbl>().eq("isdel",0);
-        if(StringUtils.isNotBlank(input.getName())) {
-            query.eq("name",input.getName());
-        }
-        if(StringUtils.isNotBlank(input.getCode())) {
-            query.eq("code",input.getCode());
-        }
-        if(input.getType()!=null){
-            if(input.getType()!=-1){
-                query.eq("type",input.getType());
+        PageInfo<FileVo> page = fileTblDao.page(input,()->{
+            QueryWrapper query = new QueryWrapper<FileTbl>().eq("isdel",0);
+            if(StringUtils.isNotBlank(input.getName())) {
+                query.eq("name",input.getName());
             }
-        }
-        query.orderByDesc("create_time");
-        List<FileVo> list = fileTblService.list(query);
-        PageInfo<FileVo> page = new PageInfo<>(list);
+            if(StringUtils.isNotBlank(input.getCode())) {
+                query.eq("code",input.getCode());
+            }
+            if(input.getType()!=null){
+                if(input.getType()!=-1){
+                    query.eq("type",input.getType());
+                }
+            }
+            query.orderByDesc("create_time");
+            return fileTblDao.list(query,FileVo.class);
+        });
         return page;
     }
 
@@ -83,17 +82,6 @@ public class FileServiceImpl  implements FileService {
     }
 
     /**
-     * 用户下载
-     * @param path
-     * @return
-     */
-    @Override
-    public void recordDownload(String path){
-        String operator = jWTUtil.getUsername();
-        fileAsyncTask.recordDownload(path,operator);
-    }
-
-    /**
      * 删除文件
      * @param name 文件名称
      * @return
@@ -111,7 +99,7 @@ public class FileServiceImpl  implements FileService {
         fileTbl.setIsdel(1);
         fileTbl.setDelUser(operator);
         fileTbl.setDelTime(now);
-        LambdaUpdateWrapper query = new LambdaUpdateWrapper<FileTbl>().eq(FileTbl::getName,name);
-        fileTblService.update(fileTbl,query);
+        LambdaUpdateWrapper query = new LambdaUpdateWrapper<FileTbl>().eq(FileTbl::getName,name).eq(FileTbl::getIsdel,0);
+        fileTblDao.update(fileTbl,query);
     }
 }

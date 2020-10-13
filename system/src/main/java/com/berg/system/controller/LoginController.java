@@ -27,4 +27,11 @@ public class LoginController extends BaseController {
     public Result<LoginOutVo> login(@RequestBody @Validated LoginInVo input){
         return getSuccessResult("请求成功",loginService.login(input));
     }
+
+    @ApiOperation(value = "退出登录")
+    @PostMapping(value = "logout")
+    public Result logout(){
+        loginService.logout();
+        return getSuccessResult("请求成功",null);
+    }
 }
