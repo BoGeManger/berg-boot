@@ -5,7 +5,7 @@ CREATE TABLE `sys_component_tbl` (
   `perms` varchar(100) DEFAULT NULL COMMENT '权限标识',
   `path` varchar(255) DEFAULT NULL COMMENT '对应路由地址',
   `icon` varchar(50) DEFAULT NULL COMMENT '图标',
-  `remark` text COMMENT '组件描述',
+  `remark` varchar(255) COMMENT '组件描述',
   `type` int(11) NOT NULL COMMENT '组件类型(0=菜单,1=按钮)',
   `no` int(11) NOT NULL COMMENT '排序',
   `create_time` datetime NOT NULL COMMENT '创建时间',

@@ -20,6 +20,10 @@ spring:
   quartz:
     job-store-type: jdbc
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/qrtzdb?useUnicode=true&serverTimezone=GMT&useSSL=false&characterEncoding=utf8&rewriteBatchedStatements=true
+    username: root
+    password: 123456
     druid:
       web-stat-filter:
         enabled: true
@@ -112,7 +116,7 @@ swagger:
   enabled: true
 
 logging:
-  file: ./log/sys-err.log
+  file: ./log/logs/sys.log
   #配置日志级别
 #  level:
 #    root: debug

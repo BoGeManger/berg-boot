@@ -1,7 +1,7 @@
 CREATE TABLE `sys_role_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '系统角色表id',
   `name` varchar(100) NOT NULL COMMENT '角色名称',
-  `remark` text COMMENT '角色描述',
+  `remark` varchar(255) COMMENT '角色描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `create_user` varchar(20) NOT NULL COMMENT '创建用户',
   `modify_time` datetime NOT NULL COMMENT '更新时间',
