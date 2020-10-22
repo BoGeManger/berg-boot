@@ -43,3 +43,4 @@
  * Mybatis插件：Mybatis Plus,PageHelper
  * 接口文档框架：Swagger 2
  * JDBC组件：Druid 
+ * 验证框架：Hibernate Validator
