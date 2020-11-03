@@ -1,4 +1,4 @@
-#
+#Spring Boot示例项目
 
 ### 架构分层简介
 |名称|定义|端口|workerId|
@@ -13,11 +13,12 @@
 ### Docker环境搭建
 |应用|获取|运行|
 |:----:|:-----|:-----|
-|redis|docker pull redis|docker run --restart=always -d --name redis -p 6379:6379 -v /etc/localtime:/etc/localtime redis redis-server --appendonly yes --requirepass "admin"|
+|redis|docker pull redis|docker run --restart=always -d --name redis -p 6379:6379 -v /etc/localtime:/etc/localtime redis redis-server --appendonly yes --requirepass "密码"|
 |rabbitmq|docker pull rabbitmq:management|docker run --restart=always --name rabbitmq -d -p 15672:15672 -p 5672:5672 rabbitmq:management|
-|minio|docker pull minio/minio|docker run --restart=always --name minio -d -p 9000:9000 -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=12345678" -v /mnt/data:/data -v /mnt/config:/root/.minio minio/minio server /data|
+|minio|docker pull minio/minio|docker run --restart=always --name minio -d -p 9000:9000 -e "MINIO_ACCESS_KEY=账号" -e "MINIO_SECRET_KEY=密码" -v /mnt/data:/data -v /mnt/config:/root/.minio minio/minio server /data|
 
 * 生产环境IDEA链接Docker开放端口2375请配置好ca证书
+* docker run添加--cap-add=SYS_PTRACE参数解决无法使用JVM命令问题
 
 ### 预设初始账号密码
 * redis 
