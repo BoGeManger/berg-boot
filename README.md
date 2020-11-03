@@ -41,8 +41,8 @@
  * 文件服务：Minio
  * Excel文件处理：AutoPOI
  * 鉴权框架：Shiro+JWT
-  * Mybatis插件：Mybatis Plus,PageHelper,dynamic datasource
-  * 接口文档框架：Swagger 2
-  * JDBC组件：Druid 
-  * 公共工具：Hutool 
-  * 验证框架：Hibernate Validator
+ * Mybatis插件：Mybatis Plus,PageHelper,dynamic datasource
+ * 接口文档框架：Swagger 2
+ * JDBC组件：Druid 
+ * 公共工具：Hutool 
+ * 验证框架：Hibernate Validator
