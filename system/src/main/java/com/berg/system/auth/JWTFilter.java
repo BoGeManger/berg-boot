@@ -3,7 +3,7 @@ package com.berg.system.auth;
 import com.alibaba.fastjson.JSON;
 import com.berg.message.MessageConstant;
 import com.berg.message.Result;
-import com.berg.system.constant.SystemConstans;
+import com.berg.system.constant.SystemConstants;
 import com.berg.utils.DesUtil;
 import com.berg.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws UnauthorizedException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        SystemConstans systemConstans = SpringUtil.getBean(SystemConstans.class);
+        SystemConstants systemConstans = SpringUtil.getBean(SystemConstants.class);
         String[] anonUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(systemConstans.getShiroUrls(), ",");
         boolean match = false;
         String thisUrl = httpServletRequest.getRequestURI();

@@ -5,7 +5,7 @@ import com.berg.constant.RedisKeyConstants;
 import com.berg.dao.system.sys.entity.UserTbl;
 import com.berg.dao.system.sys.service.UserTblDao;
 import com.berg.system.service.system.LoginService;
-import com.berg.system.constant.SystemConstans;
+import com.berg.system.constant.SystemConstants;
 import com.berg.utils.DesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -30,7 +30,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     JWTUtil jWTUtil;
     @Autowired
-    SystemConstans systemConstans;
+    SystemConstants systemConstans;
     @Lazy
     @Autowired
     LoginService loginService;

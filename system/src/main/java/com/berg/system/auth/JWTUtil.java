@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.berg.system.constant.SystemConstans;
+import com.berg.system.constant.SystemConstants;
 import com.berg.utils.DesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +21,7 @@ import java.util.Date;
 public class JWTUtil {
 
     @Autowired
-    SystemConstans systemConstans;
+    SystemConstants systemConstans;
 
     /**
      * 校验 token是否正确

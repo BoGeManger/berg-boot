@@ -13,7 +13,7 @@ import com.berg.exception.UserFriendException;
 import com.berg.system.service.system.LoginService;
 import com.berg.system.auth.JWTToken;
 import com.berg.system.auth.JWTUtil;
-import com.berg.system.constant.SystemConstans;
+import com.berg.system.constant.SystemConstants;
 import com.berg.utils.DateUtil;
 import com.berg.utils.DesUtil;
 import com.berg.vo.system.UserVo;
@@ -36,7 +36,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     JWTUtil jWTUtil;
     @Autowired
-    SystemConstans systemConstans;
+    SystemConstants systemConstans;
     @Autowired
     StringRedisTemplate stringTemplate;
 
