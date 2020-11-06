@@ -1,4 +1,4 @@
-package com.berg.system.authentication;
+package com.berg.system.auth;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.berg.constant.RedisKeyConstants;

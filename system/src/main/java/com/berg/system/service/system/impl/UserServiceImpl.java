@@ -13,7 +13,7 @@ import com.berg.dao.page.PageInfo;
 import com.berg.constant.RedisKeyConstants;
 import com.berg.exception.UserFriendException;
 import com.berg.system.service.system.UserService;
-import com.berg.system.authentication.JWTUtil;
+import com.berg.system.auth.JWTUtil;
 import com.berg.vo.system.UserEditVo;
 import com.berg.vo.system.UserVo;
 import com.berg.vo.system.in.GetUserPageInVo;

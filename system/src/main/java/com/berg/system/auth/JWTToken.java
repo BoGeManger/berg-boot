@@ -1,4 +1,4 @@
-package com.berg.system.authentication;
+package com.berg.system.auth;
 
 import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;

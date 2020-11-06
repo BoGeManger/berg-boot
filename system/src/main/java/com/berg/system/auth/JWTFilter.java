@@ -1,4 +1,4 @@
-package com.berg.system.authentication;
+package com.berg.system.auth;
 
 import com.alibaba.fastjson.JSON;
 import com.berg.message.MessageConstant;

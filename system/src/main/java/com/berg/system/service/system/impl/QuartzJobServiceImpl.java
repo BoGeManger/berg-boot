@@ -8,7 +8,7 @@ import com.berg.dao.system.sys.entity.QuartzJobTbl;
 import com.berg.dao.system.sys.service.QuartzJobTblDao;
 import com.berg.exception.FailException;
 import com.berg.exception.UserFriendException;
-import com.berg.system.authentication.JWTUtil;
+import com.berg.system.auth.JWTUtil;
 import com.berg.system.service.system.QuartzJobService;
 import com.berg.vo.system.JobEditVo;
 import com.berg.vo.system.JobVo;

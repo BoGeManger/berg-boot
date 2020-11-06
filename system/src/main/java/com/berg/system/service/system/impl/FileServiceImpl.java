@@ -7,19 +7,17 @@ import com.berg.dao.system.sys.entity.FileTbl;
 import com.berg.dao.system.sys.service.FileTblDao;
 import com.berg.exception.FailException;
 import com.berg.file.MinioUtil;
-import com.berg.system.authentication.JWTUtil;
+import com.berg.system.auth.JWTUtil;
 import com.berg.system.service.system.FileService;
 import com.berg.vo.system.FilePathVo;
 import com.berg.vo.system.FileVo;
 import com.berg.vo.system.in.GetFilePageInVo;
-import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class FileServiceImpl  implements FileService {

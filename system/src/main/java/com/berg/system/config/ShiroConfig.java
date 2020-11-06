@@ -1,7 +1,7 @@
 package com.berg.system.config;
 
-import com.berg.system.authentication.JWTFilter;
-import com.berg.system.authentication.ShiroRealm;
+import com.berg.system.auth.JWTFilter;
+import com.berg.system.auth.ShiroRealm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

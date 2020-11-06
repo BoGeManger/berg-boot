@@ -1,4 +1,4 @@
-package com.berg.system.authentication;
+package com.berg.system.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
