@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.berg.dao.constant.DataSource;
 import lombok.Getter;
 
 import java.util.*;
@@ -20,7 +21,7 @@ public class MybatisplusGenerator {
     @Getter
     public static class GeneratorConfig{
         //数据库主模块名称
-        String parentModuleName = "system";
+        String parentModuleName = DataSource.SYSTEM;
         //多数据源标识
         String ds = "DataSource.SYSTEM";
 
