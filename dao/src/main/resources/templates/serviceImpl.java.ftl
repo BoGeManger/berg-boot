@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.berg.dao.page.PageInfo;
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
+import com.berg.system.auth.JWTUtil;
 import ${cfg.packageService}.${cfg.serviceModule}.${cfg.model}Service;
 import ${cfg.packageVo}.${cfg.voModule}.${cfg.model}EditVo;
 import ${cfg.packageVo}.${cfg.voModule}.${cfg.model}Vo;
@@ -16,6 +17,9 @@ import java.time.LocalDateTime;
 
 @Service
 public class ${cfg.model}ServiceImpl implements ${cfg.model}Service {
+
+    @Autowired
+    JWTUtil jwtUtil;
 
     @Autowired
     ${entity}Dao ${cfg.entityName}Dao;
@@ -50,6 +54,7 @@ public class ${cfg.model}ServiceImpl implements ${cfg.model}Service {
     */
     @Override
     public Integer add${cfg.model}(${cfg.model}EditVo input) {
+        String operator = jwtUtil.getUsername();
         return addOrdUpdate${cfg.model}(input,"");
     }
 
@@ -60,6 +65,7 @@ public class ${cfg.model}ServiceImpl implements ${cfg.model}Service {
     */
     @Override
     public Integer update${cfg.model}(${cfg.model}EditVo input) {
+        String operator = jwtUtil.getUsername();
         return addOrdUpdate${cfg.model}(input,"");
     }
 
