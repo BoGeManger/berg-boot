@@ -1,8 +1,8 @@
 package com.berg.system.controller;
 
-import com.berg.base.BaseController;
+import com.berg.common.base.BaseController;
+import com.berg.common.constant.Result;
 import com.berg.dao.page.PageInfo;
-import com.berg.message.Result;
 import com.berg.system.service.system.FileService;
 import com.berg.vo.system.FilePathVo;
 import com.berg.vo.system.FileVo;
@@ -16,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/file")
