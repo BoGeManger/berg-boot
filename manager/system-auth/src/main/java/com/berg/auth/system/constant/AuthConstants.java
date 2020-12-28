@@ -1,4 +1,4 @@
-package com.berg.system.constant;
+package com.berg.auth.system.constant;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class SystemConstants {
+public class AuthConstants {
 
     @Value("${shiro.urls:default}")
     String shiroUrls;

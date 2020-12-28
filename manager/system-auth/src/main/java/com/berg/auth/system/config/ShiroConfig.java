@@ -1,14 +1,14 @@
-package com.berg.system.config;
+package com.berg.auth.system.config;
 
-import com.berg.system.auth.JWTFilter;
-import com.berg.system.auth.ShiroRealm;
-import org.apache.shiro.mgt.SecurityManager;
+import com.berg.auth.system.auth.AuthenticationFilter;
+import com.berg.auth.system.auth.AuthenticationRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.apache.shiro.mgt.SecurityManager;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -24,7 +24,7 @@ public class ShiroConfig {
 
         // 在 Shiro过滤器链上加入 JWTFilter
         LinkedHashMap<String, Filter> filters = new LinkedHashMap<>();
-        filters.put("jwt", new JWTFilter());
+        filters.put("jwt", new AuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filters);
 
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -44,9 +44,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public ShiroRealm shiroRealm() {
+    public AuthenticationRealm shiroRealm() {
         // 配置 Realm
-        return new ShiroRealm();
+        return new AuthenticationRealm();
     }
 
     @Bean

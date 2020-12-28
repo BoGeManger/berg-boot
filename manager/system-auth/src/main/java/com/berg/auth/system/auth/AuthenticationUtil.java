@@ -1,13 +1,12 @@
-package com.berg.system.auth;
+package com.berg.auth.system.auth;
 
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.symmetric.DES;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.berg.system.constant.SystemConstants;
+import com.berg.auth.system.constant.AuthConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,14 +18,14 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JWTUtil {
+public class AuthenticationUtil {
 
     public static final String KEY = "password";
 
     public static final cn.hutool.crypto.symmetric.DES DES = SecureUtil.des(KEY.getBytes());
 
     @Autowired
-    SystemConstants systemConstans;
+    AuthConstants authConstants;
 
     /**
      * 校验 token是否正确
@@ -104,7 +103,7 @@ public class JWTUtil {
         try {
             username = StringUtils.lowerCase(username);
             //默认两个小时
-            Date date = new Date(System.currentTimeMillis() + (systemConstans.getExpireTime()* 1000));
+            Date date = new Date(System.currentTimeMillis() + (authConstants.getExpireTime()* 1000));
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withClaim("username", username)

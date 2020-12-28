@@ -47,16 +47,6 @@ public class UserTbl implements Serializable {
     private String realname;
 
     /**
-     * 所属组织id
-     */
-    private Integer organizationId;
-
-    /**
-     * 所属组织名称
-     */
-    private String organizationName;
-
-    /**
      * 最后登录时间
      */
     private LocalDateTime lastLoginTime;

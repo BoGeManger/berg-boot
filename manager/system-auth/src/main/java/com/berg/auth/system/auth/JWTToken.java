@@ -1,10 +1,10 @@
-package com.berg.system.auth;
+package com.berg.auth.system.auth;
 
 import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;
 
 @Data
-public class JWTToken implements AuthenticationToken {
+public class JWTToken implements org.apache.shiro.authc.AuthenticationToken {
 
     private static final long serialVersionUID = 1282057025599826155L;
 

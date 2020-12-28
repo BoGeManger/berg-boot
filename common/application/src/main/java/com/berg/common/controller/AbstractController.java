@@ -1,10 +1,11 @@
-package com.berg.common.base;
+package com.berg.common.controller;
 
 import com.berg.common.constant.MessageConstants;
 import com.berg.common.constant.Result;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-public class BaseController {
+public abstract class AbstractController {
 
     /**
      * 返回请求成功

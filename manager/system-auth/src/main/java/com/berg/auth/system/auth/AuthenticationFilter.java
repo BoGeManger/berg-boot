@@ -1,10 +1,10 @@
-package com.berg.system.auth;
+package com.berg.auth.system.auth;
 
-import com.alibaba.fastjson.JSON;
+import com.berg.auth.system.constant.AuthConstants;
 import com.berg.common.constant.MessageConstants;
 import com.berg.common.constant.Result;
 import com.berg.common.utils.SpringUtil;
-import com.berg.system.constant.SystemConstants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class JWTFilter extends BasicHttpAuthenticationFilter {
+public class AuthenticationFilter extends BasicHttpAuthenticationFilter {
 
     private static final String TOKEN = "Authentication";
 
@@ -30,7 +30,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws UnauthorizedException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        SystemConstants systemConstans = SpringUtil.getBean(SystemConstants.class);
+        AuthConstants systemConstans = SpringUtil.getBean(AuthConstants.class);
         String[] anonUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(systemConstans.getShiroUrls(), ",");
         boolean match = false;
         String thisUrl = httpServletRequest.getRequestURI();
@@ -55,9 +55,9 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String token = httpServletRequest.getHeader(TOKEN);
+        String token = httpServletRequest.getHeader(TOKEN).toLowerCase();
         try {
-            JWTToken jwtToken = new JWTToken(JWTUtil.DES.decryptStr(token));
+            JWTToken jwtToken = new JWTToken(AuthenticationUtil.DES.decryptStr(token));
             getSubject(request, response).login(jwtToken);
             return true;
         } catch (Exception e) {
@@ -88,11 +88,12 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean sendChallenge(ServletRequest request, ServletResponse response) {
         log.debug("Authentication required: sending Authentication challenge response.");
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        httpResponse.setStatus(HttpStatus.OK.value());
+        httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         httpResponse.setCharacterEncoding("utf-8");
         httpResponse.setContentType("application/json; charset=utf-8");
         try  {
-            String str = JSON.toJSONString(new Result(MessageConstants.UNAUTH_ERROR_CODE,"登录失效，请重新登录",""));
+            ObjectMapper objectMapper = new ObjectMapper();
+            String str = objectMapper.writeValueAsString(new Result(MessageConstants.UNAUTH_ERROR_CODE,"登录失效，请重新登录","",HttpStatus.UNAUTHORIZED));
             httpResponse.getWriter().write(str);
         } catch (IOException e) {
             log.error("sendChallenge error：", e);

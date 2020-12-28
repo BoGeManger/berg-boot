@@ -26,7 +26,7 @@ public class MybatisplusGenerator {
         String ds = "DataSource.SYSTEM";
 
         //是否文件覆盖(默认false)
-        Boolean fileOverride = false;
+        Boolean fileOverride = true;
         //是否输出Entity(默认true)
         Boolean generateEntity = true;
         //是否输出Mapper(默认true)
@@ -117,7 +117,7 @@ public class MybatisplusGenerator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/dao/src/main/java");//路径
+        gc.setOutputDir(projectPath + "/dao/system-dao/src/main/java");//路径
         gc.setOpen(false);
         gc.setAuthor("");
         //gc.setSwagger2(true);
@@ -194,7 +194,7 @@ public class MybatisplusGenerator {
             //重新输出路径
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return projectPath + "/dao/src/main/resources/"+generatorConfig.parentModuleName+"/mapper/" + pc.getModuleName()
+                return projectPath + "/dao/system-dao/src/main/resources/"+generatorConfig.parentModuleName+"/mapper/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         };

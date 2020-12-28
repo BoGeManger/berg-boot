@@ -25,6 +25,9 @@ public class ComponentEditVo {
     @Size(max = 100, message = "权限标识长度不能超过100个字符")
     @ApiModelProperty(value = "权限标识")
     String perms;
+    @Size(max = 100, message = "前端绑定组件长度不能超过100个字符")
+    @ApiModelProperty(value = "前端绑定组件")
+    String component;
     @Size(max = 100, message = "对应路由地址长度不能超过255个字符")
     @ApiModelProperty(value = "对应路由地址")
     String path;

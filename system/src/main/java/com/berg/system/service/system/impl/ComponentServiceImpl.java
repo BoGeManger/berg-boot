@@ -2,17 +2,22 @@ package com.berg.system.service.system.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.berg.dao.page.PageInfo;
 import com.berg.dao.system.sys.entity.ComponentTbl;
 import com.berg.dao.system.sys.entity.RoleComponentTbl;
 import com.berg.dao.system.sys.service.ComponentTblDao;
 import com.berg.dao.system.sys.service.RoleComponentTblDao;
+import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.ComponentService;
 import com.berg.system.auth.JWTUtil;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.ComponentEditVo;
 import com.berg.vo.system.ComponentTreeVo;
+import com.berg.vo.system.ComponentVo;
 import com.berg.vo.system.OperatorBatchComVo;
+import com.berg.vo.system.in.GetComPageInVo;
 import com.berg.vo.system.in.OperatorBatchComInVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ComponentServiceImpl implements ComponentService {
+public class ComponentServiceImpl extends AbstractService implements ComponentService {
 
-    @Autowired
-    JWTUtil jWTUtil;
     @Autowired
     ComponentTblDao componentTblDao;
     @Autowired
@@ -50,7 +53,7 @@ public class ComponentServiceImpl implements ComponentService {
             ComponentTreeVo tree = new ComponentTreeVo();
             BeanUtils.copyProperties(item, tree);
             //添加子集
-            tree.setChilds(getComTreeChild(item.getId()));
+            tree.setChildren(getComTreeChild(item.getId()));
             list.add(tree);
         });
         result.setList(list);
@@ -74,10 +77,28 @@ public class ComponentServiceImpl implements ComponentService {
             ComponentTreeVo tree = new ComponentTreeVo();
             BeanUtils.copyProperties(item, tree);
             //添加子集
-            tree.setChilds(getComTreeChild(item.getId()));
+            tree.setChildren(getComTreeChild(item.getId()));
             result.add(tree);
         });
         return result;
+    }
+
+    /**
+     * 获取组件分页列表
+     * @param input
+     * @return
+     */
+    @Override
+    public PageInfo<ComponentVo> getComPage(GetComPageInVo input){
+        return componentTblDao.page(input,()->{
+            LambdaQueryWrapper query  = new LambdaQueryWrapper<ComponentTbl>()
+                    .like(StringUtils.isNotBlank(input.getName()),ComponentTbl::getName,input.getName())
+                    .like(StringUtils.isNotBlank(input.getPath()),ComponentTbl::getPath,input.getPath())
+                    .like(StringUtils.isNotBlank(input.getPerms()),ComponentTbl::getPerms,input.getPerms())
+                    .like(StringUtils.isNotBlank(input.getRemark()),ComponentTbl::getRemark,input.getRemark())
+                    .eq(input.getType()==null,ComponentTbl::getType,input.getType());
+            return componentTblDao.list(query,ComponentVo.class);
+        });
     }
 
     /**
@@ -93,6 +114,28 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     /**
+     * 新增组件
+     * @param input
+     * @return
+     */
+    @Override
+    public Integer addCom(ComponentEditVo input){
+        String operator = super.getUsername();
+        return addOrUpdateCom(input,operator);
+    }
+
+    /**
+     * 修改组件
+     * @param input
+     * @return
+     */
+    @Override
+    public Integer updateCom(ComponentEditVo input){
+        String operator = super.getUsername();
+        return addOrUpdateCom(input,operator);
+    }
+
+    /**
      * 批量操作组件(新增,修改,删除)
      *
      * @param input
@@ -100,7 +143,7 @@ public class ComponentServiceImpl implements ComponentService {
      */
     @Override
     public void operatorBatchCom(OperatorBatchComInVo input) {
-        String operator = jWTUtil.getUsername();
+        String operator = super.getUsername();
         //新增或修改组件
         input.getComs().forEach(item -> {
             Integer id = addOrUpdateCom(item, operator);
@@ -169,7 +212,7 @@ public class ComponentServiceImpl implements ComponentService {
         LocalDateTime now = LocalDateTime.now();
         ComponentTbl componentTbl = componentTblDao.getById(id);
         if (componentTbl != null) {
-            String operator = jWTUtil.getUsername();
+            String operator = super.getUsername();
             componentTbl.setIsdel(1);
             componentTbl.setDelTime(now);
             componentTbl.setDelUser(operator);

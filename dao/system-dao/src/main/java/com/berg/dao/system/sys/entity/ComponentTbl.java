@@ -47,6 +47,11 @@ public class ComponentTbl implements Serializable {
     private String perms;
 
     /**
+     * 前端绑定组件
+     */
+    private String component;
+
+    /**
      * 对应路由地址
      */
     private String path;

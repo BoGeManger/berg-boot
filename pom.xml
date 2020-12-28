@@ -25,6 +25,7 @@
         <module>dao</module>
 
         <module>system</module>
+        <module>manager</module>
     </modules>
 
     <properties>

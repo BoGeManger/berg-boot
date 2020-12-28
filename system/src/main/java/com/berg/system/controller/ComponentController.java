@@ -1,11 +1,14 @@
 package com.berg.system.controller;
 
-import com.berg.common.base.BaseController;
+import com.berg.common.controller.AbstractController;
 import com.berg.common.constant.Result;
+import com.berg.dao.page.PageInfo;
 import com.berg.system.service.system.ComponentService;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.ComponentEditVo;
 import com.berg.vo.system.ComponentTreeVo;
+import com.berg.vo.system.ComponentVo;
+import com.berg.vo.system.in.GetComPageInVo;
 import com.berg.vo.system.in.OperatorBatchComInVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/com")
 @Api(tags = "组件管理")
-public class ComponentController extends BaseController {
+public class ComponentController extends AbstractController {
 
     @Autowired
     ComponentService componentService;
@@ -28,10 +31,28 @@ public class ComponentController extends BaseController {
         return getSuccessResult("请求成功",componentService.getComTree());
     }
 
+    @ApiOperation("获取组件分页列表")
+    @GetMapping(value = "getComPage")
+    public Result<PageInfo<ComponentVo>> getComPage(@Validated GetComPageInVo input){
+        return getSuccessResult("请求成功",componentService.getComPage(input));
+    }
+
     @ApiOperation("获取组件")
     @GetMapping(value = "getCom")
     public Result<ComponentEditVo> getCom(@ApiParam(value = "表id",required = true) @RequestParam Integer id){
         return getSuccessResult("请求成功",componentService.getCom(id));
+    }
+
+    @ApiOperation("新增组件")
+    @PostMapping(value = "addCom")
+    public Result<Integer> addCom(@RequestBody @Validated ComponentEditVo input){
+        return getSuccessResult("请求成功",componentService.addCom(input));
+    }
+
+    @ApiOperation("修改组件")
+    @PutMapping(value = "updateCom")
+    public Result<Integer> updateCom(@RequestBody @Validated ComponentEditVo input){
+        return getSuccessResult("请求成功",componentService.updateCom(input));
     }
 
     @ApiOperation("批量操作组件(新增,修改,删除)")

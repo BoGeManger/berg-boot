@@ -1,4 +1,4 @@
-package com.berg.system.config;
+package com.berg.common.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
