@@ -9,7 +9,6 @@ import com.berg.dao.system.sys.service.ComponentTblDao;
 import com.berg.dao.system.sys.service.RoleComponentTblDao;
 import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.ComponentService;
-import com.berg.system.auth.JWTUtil;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.ComponentEditVo;
 import com.berg.vo.system.ComponentTreeVo;

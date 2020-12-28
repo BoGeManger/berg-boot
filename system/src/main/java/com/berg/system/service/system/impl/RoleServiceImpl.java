@@ -10,7 +10,6 @@ import com.berg.dao.system.sys.service.RoleComponentTblDao;
 import com.berg.dao.system.sys.service.RoleTblDao;
 import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.RoleService;
-import com.berg.system.auth.JWTUtil;
 import com.berg.vo.system.RoleEditVo;
 import com.berg.vo.system.RoleVo;
 import com.berg.vo.system.in.GetRolePageInVo;

@@ -5,7 +5,6 @@ import com.berg.dao.system.sys.entity.OrganizationTbl;
 import com.berg.dao.system.sys.service.OrganizationTblDao;
 import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.OrganizationService;
-import com.berg.system.auth.JWTUtil;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.OperatorBatchOrganizationVo;
 import com.berg.vo.system.OrganizationEditVo;
