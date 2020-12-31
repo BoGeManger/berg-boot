@@ -32,6 +32,12 @@ public class ComponentController extends AbstractController {
         return getSuccessResult("请求成功",componentService.getComTree());
     }
 
+    @ApiOperation("根据用户获取组件树形列表")
+    @GetMapping(value = "getComTreeByUser")
+    public Result<ListVo<ComponentTreeVo>> getComTreeByUser(){
+        return getSuccessResult("请求成功",componentService.getComTreeByUser());
+    }
+
     @ApiOperation("获取组件分页列表")
     @GetMapping(value = "getComPage")
     public Result<PageInfo<ComponentVo>> getComPage(@Validated GetComPageInVo input){

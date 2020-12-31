@@ -13,6 +13,7 @@ import com.berg.dao.system.sys.service.RoleComponentTblDao;
 import com.berg.dao.system.sys.service.RouterTblDao;
 import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.ComponentService;
+import com.berg.system.service.system.LoginService;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.*;
 import com.berg.vo.system.in.GetComPageInVo;
@@ -25,10 +26,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ComponentServiceImpl extends AbstractService implements ComponentService {
 
+    @Autowired
+    LoginService loginService;
     @Autowired
     ComponentTblDao componentTblDao;
     @Autowired
@@ -67,6 +71,38 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
     }
 
     /**
+     * 根据用户获取组件树形列表
+     * @return
+     */
+    public ListVo<ComponentTreeVo> getComTreeByUser(){
+        Set<String> perms = loginService.getUserPerms(getUsername());
+        ListVo<ComponentTreeVo> result = new ListVo<>();
+        List<ComponentTreeVo> list = new ArrayList<>();
+        //查找根组件
+        QueryWrapper queryWrapper = new QueryWrapper<ComponentTbl>()
+                .eq("isdel",0)
+                .eq("parent_id",0)
+                .orderByAsc("no");
+        List<ComponentTbl> componentTblList = componentTblDao.list(queryWrapper);
+        for (ComponentTbl item : componentTblList) {
+            if(!perms.contains(item.getPerms())){
+                continue;
+            }
+            ComponentTreeVo tree = new ComponentTreeVo();
+            BeanUtils.copyProperties(item, tree);
+            if(tree.getType()==0){
+                LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,tree.getId());
+                tree.setRouter(routerTblDao.getOneLimit(routerQuery, RouterVo.class));
+            }
+            //添加子集
+            tree.setChildren(getComTreeChild(item.getId(),perms));
+            list.add(tree);
+        }
+        result.setList(list);
+        return result;
+    }
+
+    /**
      * 获取组件树形子集列表
      *
      * @param id
@@ -90,6 +126,36 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
             tree.setChildren(getComTreeChild(item.getId()));
             result.add(tree);
         });
+        return result;
+    }
+
+    /**
+     * 获取组件树形子集列表
+     *
+     * @param id
+     * @return
+     */
+    List<ComponentTreeVo> getComTreeChild(Integer id,Set<String> perms) {
+        List<ComponentTreeVo> result = new ArrayList<>();
+        QueryWrapper queryWrapper = new QueryWrapper<ComponentTbl>()
+                .eq("isdel",0)
+                .eq("parent_id",id)
+                .orderByAsc("no");
+        List<ComponentTbl> componentTblList = componentTblDao.list(queryWrapper);
+        for (ComponentTbl item : componentTblList) {
+            if(!perms.contains(item.getPerms())){
+                continue;
+            }
+            ComponentTreeVo tree = new ComponentTreeVo();
+            BeanUtils.copyProperties(item, tree);
+            if(tree.getType()==0){
+                LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,tree.getId());
+                tree.setRouter(routerTblDao.getOneLimit(routerQuery, RouterVo.class));
+            }
+            //添加子集
+            tree.setChildren(getComTreeChild(item.getId()));
+            result.add(tree);
+        }
         return result;
     }
 

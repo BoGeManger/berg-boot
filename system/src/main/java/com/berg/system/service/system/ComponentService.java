@@ -14,6 +14,8 @@ public interface ComponentService {
 
     ListVo<ComponentTreeVo> getComTree();
 
+    ListVo<ComponentTreeVo> getComTreeByUser();
+
     PageInfo<ComponentVo> getComPage(GetComPageInVo input);
 
     ComponentEditVo getCom(Integer id);
