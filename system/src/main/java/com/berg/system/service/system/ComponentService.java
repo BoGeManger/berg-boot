@@ -22,6 +22,8 @@ public interface ComponentService {
 
     Integer updateCom(ComponentEditVo input);
 
-    void operatorBatchCom(OperatorBatchComInVo input);
+    void delCom(Integer id);
+
+//    void operatorBatchCom(OperatorBatchComInVo input);
 
 }

@@ -2,18 +2,19 @@ package com.berg.system.service.system.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.berg.dao.base.DSTransactional;
 import com.berg.dao.page.PageInfo;
 import com.berg.dao.system.sys.entity.ComponentTbl;
 import com.berg.dao.system.sys.entity.RoleComponentTbl;
+import com.berg.dao.system.sys.entity.RouterTbl;
 import com.berg.dao.system.sys.service.ComponentTblDao;
 import com.berg.dao.system.sys.service.RoleComponentTblDao;
+import com.berg.dao.system.sys.service.RouterTblDao;
 import com.berg.system.service.AbstractService;
 import com.berg.system.service.system.ComponentService;
 import com.berg.vo.common.ListVo;
-import com.berg.vo.system.ComponentEditVo;
-import com.berg.vo.system.ComponentTreeVo;
-import com.berg.vo.system.ComponentVo;
-import com.berg.vo.system.OperatorBatchComVo;
+import com.berg.vo.system.*;
 import com.berg.vo.system.in.GetComPageInVo;
 import com.berg.vo.system.in.OperatorBatchComInVo;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,8 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
 
     @Autowired
     ComponentTblDao componentTblDao;
+    @Autowired
+    RouterTblDao routerTblDao;
     @Autowired
     RoleComponentTblDao roleComponentTblDao;
 
@@ -51,6 +54,10 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
         componentTblList.forEach(item -> {
             ComponentTreeVo tree = new ComponentTreeVo();
             BeanUtils.copyProperties(item, tree);
+            if(tree.getType()==0){
+                LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,tree.getId());
+                tree.setRouter(routerTblDao.getOneLimit(routerQuery, RouterVo.class));
+            }
             //添加子集
             tree.setChildren(getComTreeChild(item.getId()));
             list.add(tree);
@@ -75,6 +82,10 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
         componentTblList.forEach(item -> {
             ComponentTreeVo tree = new ComponentTreeVo();
             BeanUtils.copyProperties(item, tree);
+            if(tree.getType()==0){
+                LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,tree.getId());
+                tree.setRouter(routerTblDao.getOneLimit(routerQuery, RouterVo.class));
+            }
             //添加子集
             tree.setChildren(getComTreeChild(item.getId()));
             result.add(tree);
@@ -92,7 +103,6 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
         return componentTblDao.page(input,()->{
             LambdaQueryWrapper query  = new LambdaQueryWrapper<ComponentTbl>()
                     .like(StringUtils.isNotBlank(input.getName()),ComponentTbl::getName,input.getName())
-                    .like(StringUtils.isNotBlank(input.getPath()),ComponentTbl::getPath,input.getPath())
                     .like(StringUtils.isNotBlank(input.getPerms()),ComponentTbl::getPerms,input.getPerms())
                     .like(StringUtils.isNotBlank(input.getRemark()),ComponentTbl::getRemark,input.getRemark())
                     .eq(input.getType()==null,ComponentTbl::getType,input.getType());
@@ -109,6 +119,8 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
     @Override
     public ComponentEditVo getCom(Integer id) {
         ComponentEditVo result = componentTblDao.getById(id,ComponentEditVo.class);
+        LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,result.getId());
+        result.setRouter(routerTblDao.getOneLimit(routerQuery, RouterEditVo.class));
         return result;
     }
 
@@ -117,6 +129,7 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
      * @param input
      * @return
      */
+    @DSTransactional
     @Override
     public Integer addCom(ComponentEditVo input){
         String operator = super.getUsername();
@@ -128,6 +141,7 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
      * @param input
      * @return
      */
+    @DSTransactional
     @Override
     public Integer updateCom(ComponentEditVo input){
         String operator = super.getUsername();
@@ -140,22 +154,23 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
      * @param input
      * @return
      */
-    @Override
-    public void operatorBatchCom(OperatorBatchComInVo input) {
-        String operator = super.getUsername();
-        //新增或修改组件
-        input.getComs().forEach(item -> {
-            Integer id = addOrUpdateCom(item, operator);
-            //设置子组件
-            item.getChilds().forEach(child -> {
-                setChildsComs(operator, child, id);
-            });
-        });
-        //删除组件
-        input.getDelIds().forEach(id -> {
-            delCom(id);
-        });
-    }
+//    @DSTransactional
+//    @Override
+//    public void operatorBatchCom(OperatorBatchComInVo input) {
+//        String operator = super.getUsername();
+//        //新增或修改组件
+//        input.getComs().forEach(item -> {
+//            Integer id = addOrUpdateCom(item, operator);
+//            //设置子组件
+//            item.getChilds().forEach(child -> {
+//                setChildsComs(operator, child, id);
+//            });
+//        });
+//        //删除组件
+//        input.getDelIds().forEach(id -> {
+//            delCom(id);
+//        });
+//    }
 
     /**
      * 设置子组件
@@ -186,8 +201,6 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
         componentTbl.setParentId(input.getParentId());
         componentTbl.setName(input.getName());
         componentTbl.setPerms(input.getPerms());
-        componentTbl.setPath(input.getPath());
-        componentTbl.setIcon(input.getIcon());
         componentTbl.setRemark(input.getRemark());
         componentTbl.setType(input.getType());
         componentTbl.setNo(input.getNo());
@@ -199,7 +212,35 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
             componentTbl.setIsdel(0);
         }
         componentTblDao.saveOrUpdateById(componentTbl);
+        if(componentTbl.getType()==0){
+            addOrUpdateRouter(componentTbl.getId(),input.getRouter());
+        }
         return componentTbl.getId();
+    }
+
+    /**
+     * 新增或修改路由
+     * @param componentId
+     * @param input
+     */
+    void addOrUpdateRouter(Integer componentId,RouterEditVo input){
+        LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,componentId);
+        RouterTbl routerTbl = routerTblDao.getOneLimit(routerQuery);
+        if(routerTbl==null){
+            routerTbl = new RouterTbl();
+            routerTbl.setId(0);
+            routerTbl.setComponentId(componentId);
+        }
+        routerTbl.setComponent(input.getComponent());
+        routerTbl.setPath(input.getPath());
+        routerTbl.setIcon(input.getIcon());
+        routerTbl.setRedirect(input.getRedirect());
+        routerTbl.setHidden(input.getHidden());
+        routerTbl.setHideChildreninMenu(input.getHideChildreninMenu());
+        routerTbl.setKeepAlive(input.getKeepAlive());
+        routerTbl.setHiddenHeaderContent(input.getHiddenHeaderContent());
+        routerTbl.setTarget(input.getTarget());
+        routerTblDao.saveOrUpdateById(routerTbl);
     }
 
     /**
@@ -207,7 +248,8 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
      *
      * @param id
      */
-    void delCom(Integer id) {
+    @DSTransactional
+    public void delCom(Integer id) {
         LocalDateTime now = LocalDateTime.now();
         ComponentTbl componentTbl = componentTblDao.getById(id);
         if (componentTbl != null) {
@@ -216,6 +258,11 @@ public class ComponentServiceImpl extends AbstractService implements ComponentSe
             componentTbl.setDelTime(now);
             componentTbl.setDelUser(operator);
             componentTblDao.updateById(componentTbl);
+            //删除路由信息
+            if(componentTbl.getType()==0){
+                LambdaQueryWrapper routerQuery = Wrappers.<RouterTbl>lambdaQuery().eq(RouterTbl::getComponentId,componentTbl.getId());
+                routerTblDao.remove(routerQuery);
+            }
             //作废原有授权数据
             RoleComponentTbl roleComponentTbl = new RoleComponentTbl();
             roleComponentTbl.setComId(id);

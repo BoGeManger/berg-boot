@@ -4,6 +4,7 @@ import com.berg.common.controller.AbstractController;
 import com.berg.common.constant.Result;
 import com.berg.dao.page.PageInfo;
 import com.berg.system.service.system.ComponentService;
+import com.berg.vo.common.EntityIdVo;
 import com.berg.vo.common.ListVo;
 import com.berg.vo.system.ComponentEditVo;
 import com.berg.vo.system.ComponentTreeVo;
@@ -55,11 +56,18 @@ public class ComponentController extends AbstractController {
         return getSuccessResult("请求成功",componentService.updateCom(input));
     }
 
-    @ApiOperation("批量操作组件(新增,修改,删除)")
-    @PostMapping(value = "operatorBatchCom")
-    public Result<Boolean> operatorBatchCom(@RequestBody @Validated OperatorBatchComInVo input){
-        componentService.operatorBatchCom(input);
+    @ApiOperation("删除组件")
+    @PutMapping(value = "delCom")
+    public Result<Boolean> delCom(@RequestBody @Validated EntityIdVo<Integer> input){
+        componentService.delCom(input.getId());
         return getSuccessResult("请求成功",true);
     }
+
+//    @ApiOperation("批量操作组件(新增,修改,删除)")
+//    @PostMapping(value = "operatorBatchCom")
+//    public Result<Boolean> operatorBatchCom(@RequestBody @Validated OperatorBatchComInVo input){
+//        componentService.operatorBatchCom(input);
+//        return getSuccessResult("请求成功",true);
+//    }
 
 }

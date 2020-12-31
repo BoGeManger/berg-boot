@@ -102,7 +102,7 @@ minio:
   bucketName: master
 
 shiro:
-  urls: /**/doc.html/**,/**/swagger-resources/**,/**/v2/**,/**/webjars/**,/system/login/login,/**/druid/**,/**/actuator/**
+  urls: /**/doc.html/**,/**/swagger-resources/**,/**/v2/**,/**/webjars/**,/**/druid/**,/**/actuator/**,/system/login/login,/system/com/getComTree
   accounts: admin
   expireTime: 7200
 
