@@ -8,6 +8,7 @@
         <module>redis</module>
         <module>minio</module>
         <module>quartz</module>
+        <module>all-common</module>
     </modules>
 
     <parent>
