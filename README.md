@@ -58,7 +58,7 @@
  * 鉴权：Shiro+JWT
  * Mybatis插件：[Mybatis Plus](https://baomidou.com/guide/)
  * 分页插件：PageHelper
- * 多数据源组件：dynamic datasource
+ * 多数据源组件：Dynamic Datasource
  * 接口文档组件：knife4j
  * JDBC组件：Druid 
  * 公共工具组件：[Hutool](https://www.hutool.cn/docs/#/)
