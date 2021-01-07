@@ -63,3 +63,5 @@
  * JDBC组件：Druid 
  * 公共工具组件：[Hutool](https://www.hutool.cn/docs/#/)
  * 验证组件：Hibernate Validator
+ * Excel工具：[EasyExcel](https://www.yuque.com/easyexcel/doc/easyexcel)
+ * 高性能实体映射工具：MapStruct
