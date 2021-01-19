@@ -21,11 +21,11 @@
 
     <modules>
         <module>common</module>
-        <module>model</module>
         <module>dao</module>
-
-        <module>system</module>
+        <module>generator</module>
         <module>manager</module>
+        <module>model</module>
+        <module>modules</module>
     </modules>
 
     <properties>

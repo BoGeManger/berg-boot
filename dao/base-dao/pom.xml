@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.berg</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>vo</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
@@ -43,21 +43,11 @@
             <artifactId>mybatis-plus</artifactId>
             <version>3.3.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.3.2</version>
-        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
             <version>3.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
         <dependency>

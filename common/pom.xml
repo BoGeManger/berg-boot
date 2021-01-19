@@ -3,16 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>application</module>
-        <module>util</module>
-        <module>redis</module>
+        <module>all-common</module>
+        <module>base-application</module>
         <module>minio</module>
         <module>quartz</module>
-        <module>all-common</module>
+        <module>redis</module>
+        <module>util</module>
+        <module>validator</module>
     </modules>
 
     <parent>
-        <artifactId>berg-cloud</artifactId>
+        <artifactId>berg-boot</artifactId>
         <groupId>com.berg</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
