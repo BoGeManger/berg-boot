@@ -20,6 +20,8 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.berg.generator.config.ConstVal;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 从数据库表到文件的命名策略
@@ -32,7 +34,13 @@ public enum NamingStrategy {
     /**
      * 下划线转驼峰命名
      */
-    underline_to_camel;
+    underline_to_camel,
+    /**
+     * 驼峰转下划线命名
+     */
+    camel_to_underline;
+
+    static Pattern humpPattern = Pattern.compile("[A-Z]");
 
     public static String underlineToCamel(String name) {
         // 快速检查
@@ -59,6 +67,21 @@ public enum NamingStrategy {
                 result.append(capitalFirst(camel));
             }
         });
+        return result.toString();
+    }
+
+    public static String camelToUnderline(String name) {
+        // 快速检查
+        if (StringUtils.isBlank(name)) {
+            // 没必要转换
+            return StringPool.EMPTY;
+        }
+        StringBuffer result = new StringBuffer();
+        Matcher matcher = humpPattern.matcher(name);
+        while (matcher.find()) {
+            matcher.appendReplacement(result, ConstVal.UNDERLINE + matcher.group(0).toLowerCase());
+        }
+        matcher.appendTail(result);
         return result.toString();
     }
 
