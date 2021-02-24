@@ -28,6 +28,6 @@ public interface ComponentService {
 
     void delCom(Integer id);
 
-//    void operatorBatchCom(OperatorBatchComInVo input);
+   //void operatorBatchCom(OperatorBatchComInVo input);
 
 }
